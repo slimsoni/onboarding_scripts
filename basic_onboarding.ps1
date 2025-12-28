@@ -17,8 +17,25 @@ $escolha = Read-Host "Digite o número da sua opção"
 
 switch ($escolha) {
     "1" {
-        Write-Host "Mantendo o sistema em Português (BR)..." -ForegroundColor Green
-        # Aqui você pode seguir com o resto das suas instalações padrão
+        Write-Host "Iniciando a instalação do pacote de idioma Português (BR)..." -ForegroundColor Yellow
+        Write-Host "Isso pode levar alguns minutos dependendo da conexão..." -ForegroundColor Gray
+        
+        # Instala o pacote de idioma
+        try {
+            Install-Language pt-BR -ErrorAction Stop
+            
+            # Define como idioma da interface (UI)
+            Set-WinUILanguageOverride -Language pt-BR
+            
+            # Define formatos regionais (Data, Moeda)
+            Set-Culture pt-BR
+            
+            # Define localidade do sistema (Administrative)
+            Set-WinSystemLocale pt-BR
+            
+            Write-Host "Português BR instalado e configurado com sucesso!" -ForegroundColor Green
+            Write-Host "AVISO: As mudanças terão efeito total após reiniciar." -ForegroundColor Magenta
+        }
     }
     
     "2" {
@@ -56,7 +73,6 @@ Write-Host "Pressione qualquer tecla para continuar com a instalação das ferra
 $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 
 # 2. Instalação de Softwares via Winget (Exemplos comuns)
-# O parâmetro --accept-source-agreements evita perguntas extras
 Write-Host ""
 Write-Host "=====================================================" -ForegroundColor Cyan
 Write-Host "       FERRAMENTAS BÁSICAS DO ONBOARDING GGBR        " -ForegroundColor Cyan
@@ -75,7 +91,6 @@ $apps = @(
 	"Microsoft.Teams",
     "Zoom.Zoom",
 	"Microsoft.Office"
-    
 )
 
 foreach ($app in $apps) {
